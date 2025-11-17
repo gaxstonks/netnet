@@ -1,0 +1,6 @@
+I inferred APP_URL from your input and generated JWT_SECRET and ADMIN_SECRET.
+
+APP_URL used: https://pluscurriculo.netlify.app
+JWT_SECRET and ADMIN_SECRET have been added to .env.example in the repo root.
+
+Important: Replace DATABASE_URL and Google/Stripe secrets with real values before deploying.
