@@ -1,35 +1,41 @@
-# GAX Currículos - Netlify Complete
 
-This package contains a full React + Vite frontend plus Netlify Functions implementing:
-- Signup / Login (bcrypt + JWT)
-- Google OAuth (placeholders, requires client id/secret and redirect)
-- Admin panel (promote users using ADMIN_SECRET)
-- Templates editor (choose template, edit fields, drag reorder sections, export JSON)
-- Stripe Checkout & Webhook placeholders
-- Prisma schema (SQLite example) and helper for serverless
+# PlusCurriculo — Netlify production-ready bundle
 
-## Environment variables (set in Netlify)
-- DATABASE_URL (e.g. file:./dev.db for local, or postgres URL)
-- JWT_SECRET (random string)
-- ADMIN_SECRET (secret to promote admins)
+This package is preconfigured for Netlify functions, Google OAuth and Supabase Postgres.
+I used the Netlify project name you provided (`pluscurriculo`) and set SITE_URL to `https://pluscurriculo.netlify.app` — please verify this is the correct site URL in your Netlify settings.
+
+## Required Netlify Environment Variables (set in Site settings -> Build & deploy -> Environment)
 - GOOGLE_CLIENT_ID
 - GOOGLE_CLIENT_SECRET
-- GOOGLE_REDIRECT (e.g. https://your-site.netlify.app/.netlify/functions/oauth-google-callback)
-- APP_URL (frontend base URL)
-- STRIPE_SECRET_KEY
-- STRIPE_WEBHOOK_SECRET
-- SUCCESS_URL, CANCEL_URL
+- SUPABASE_URL
+- SUPABASE_SERVICE_ROLE_KEY
+- JWT_SECRET (a long random string used to sign JWTs)
+- SITE_URL (if different from https://pluscurriculo.netlify.app, set it)
+
+## SQL (create profiles table)
+Run the SQL below in Supabase SQL editor:
+```
+create table if not exists public.profiles (
+  id text primary key,
+  email text,
+  full_name text,
+  avatar_url text,
+  inserted_at timestamptz default now()
+);
+```
+
+## How it works (production-ready)
+- OAuth flow runs in Netlify Functions.
+- After exchanging code, server signs a JWT and sets it as an HTTP-only Secure cookie (`session`) with SameSite=Lax and Max-Age=7 days.
+- Frontend requests `/.netlify/functions/get-profile` which reads cookie and returns profile.
+- Logout clears cookie.
 
 ## Deploy
-1. Create a GitHub repo and push these files.
-2. Connect repo to Netlify (New site from Git).
-3. Set Environment Variables in Site settings.
-4. Deploy. Netlify will build the Vite app and deploy functions automatically.
+1. `npm install` locally.
+2. `npm run build` to test build.
+3. Push to your GitHub repo and connect to Netlify (or drag & drop the build folder).
+4. Ensure Netlify Functions are enabled (netlify.toml included).
 
-## Local testing
-1. npm install
-2. npx prisma generate
-3. npx prisma migrate dev --name init
-4. npm run dev
-
-If you run into errors on Netlify deploy, paste the build log here and I will fix the code and reissue an updated ZIP.
+## Notes / Security
+- Keep `SUPABASE_SERVICE_ROLE_KEY` and `GOOGLE_CLIENT_SECRET` secret.
+- In production, consider rotating JWT_SECRET periodically and using short-lived tokens + refresh flow.
