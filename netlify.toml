@@ -1,0 +1,9 @@
+[build]
+  publish = "dist"
+  command = "npm run build && cp -r public dist"
+
+[functions]
+  directory = "netlify/functions"
+
+[[plugins]]
+  package = "@netlify/plugin-functions-core"
