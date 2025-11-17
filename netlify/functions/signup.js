@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const prisma = require('./lib_prisma');
-exports.handler = async function(event, context){
+exports.handler = async function(event){
   if(event.httpMethod!=='POST') return { statusCode:405 }
   const body = JSON.parse(event.body||'{}')
   const { name, email, password } = body

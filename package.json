@@ -1,12 +1,11 @@
 {
-  "name": "gax-netlify",
+  "name": "gax-netlify-complete",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "format": "prettier --write ."
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -18,7 +17,6 @@
     "vite": "^5.0.0",
     "tailwindcss": "^4.2.0",
     "postcss": "^8.4.0",
-    "autoprefixer": "^10.4.0",
-    "prettier": "^2.8.0"
+    "autoprefixer": "^10.4.0"
   }
 }

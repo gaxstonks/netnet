@@ -1,33 +1,35 @@
-# GAX Currículos - Netlify Conversion
+# GAX Currículos - Netlify Complete
 
-This project is a React + Vite frontend with Netlify Functions for backend logic.
+This package contains a full React + Vite frontend plus Netlify Functions implementing:
+- Signup / Login (bcrypt + JWT)
+- Google OAuth (placeholders, requires client id/secret and redirect)
+- Admin panel (promote users using ADMIN_SECRET)
+- Templates editor (choose template, edit fields, drag reorder sections, export JSON)
+- Stripe Checkout & Webhook placeholders
+- Prisma schema (SQLite example) and helper for serverless
 
-## Features
-- Signup / Login (bcrypt + JWT) via Netlify Functions
-- Stripe checkout and webhook placeholders
-- Notify-payment API to set plan on user
-- Downloads protected based on user.planActiveUntil
-- Prisma schema included for Postgres/SQLite usage in Netlify Functions
+## Environment variables (set in Netlify)
+- DATABASE_URL (e.g. file:./dev.db for local, or postgres URL)
+- JWT_SECRET (random string)
+- ADMIN_SECRET (secret to promote admins)
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+- GOOGLE_REDIRECT (e.g. https://your-site.netlify.app/.netlify/functions/oauth-google-callback)
+- APP_URL (frontend base URL)
+- STRIPE_SECRET_KEY
+- STRIPE_WEBHOOK_SECRET
+- SUCCESS_URL, CANCEL_URL
 
-## How to deploy
-1. Install dependencies locally to test:
-   ```bash
-   npm install
-   npx prisma generate
-   npx prisma migrate dev --name init # if using SQLite locally
-   npm run dev
-   ```
-2. Create a GitHub repo, push the files, connect to Netlify.
-3. Set Netlify environment variables:
-   - DATABASE_URL (e.g. file:./dev.db for local, or postgres URL for production)
-   - JWT_SECRET (random string)
-   - STRIPE_SECRET_KEY
-   - STRIPE_WEBHOOK_SECRET
-   - SUCCESS_URL, CANCEL_URL (optional)
-4. Netlify build will run `npm run build` and publish `dist`.
+## Deploy
+1. Create a GitHub repo and push these files.
+2. Connect repo to Netlify (New site from Git).
+3. Set Environment Variables in Site settings.
+4. Deploy. Netlify will build the Vite app and deploy functions automatically.
 
-## Notes about Prisma on Netlify
-- For production use a Postgres database (Supabase, Neon, Railway).
-- Avoid intensive connection pooling on serverless functions; Prisma client is set up with a global instance in `netlify/functions/lib_prisma.js` to minimize cold-start issues.
+## Local testing
+1. npm install
+2. npx prisma generate
+3. npx prisma migrate dev --name init
+4. npm run dev
 
-If any build errors occur on Netlify, copy the build log and paste here; I will fix them and provide an updated ZIP.
+If you run into errors on Netlify deploy, paste the build log here and I will fix the code and reissue an updated ZIP.
